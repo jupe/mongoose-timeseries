@@ -1,0 +1,35 @@
+{
+    "name": "mongoose-ts",
+    "version": "0.0.1",
+    "preferGlobal": false,
+    "description": "Mongoose model for time series data",
+    "preferGlobal": "true",
+    "main": "./lib/mongoose-ts.js",
+    "author": "Jussi Vatjus-Anttila <jussiva@gmail.com>",
+    "contributors": [ 
+      {
+        "name": "Jussi Vatjus-Anttila",
+        "email": "jussiva@gmail.com"
+      } 
+    ],
+    "keywords": ["mongodb", "mongoose"],
+    "repository" : {
+        "type": "git",
+        "url": "https://github.com/jupe/mongoose-ts.git"
+    },
+    "dependencies": {
+      "mongoose": "*",
+      "underscore": "*",
+      "async": "*"
+    },
+    "devDependencies": {
+        "mocha": "*",
+        "chai": "*"
+        
+    },
+    "license": "MIT",
+    "engines": { "node": ">=0.8.0" },
+    "scripts": {
+      "test": "mocha -R list test"
+    }
+}
