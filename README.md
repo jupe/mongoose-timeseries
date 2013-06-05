@@ -23,6 +23,7 @@ npm install mongoose-ts (not yet)
 
 API
 ---
+```
 init( <collection>, options)
    options: {
     interval: Number,
@@ -48,6 +49,7 @@ findData(options, callbac)
 findMax(options, callback)
 findMin(options, callback)
 model   -> normal mongoose model instance
+```
 
 Usage
 ------------
