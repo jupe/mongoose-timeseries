@@ -76,7 +76,7 @@ describe('hours push -', function() {
                   to: new Date(2013,6,16)
                  }, function(e,min){
       assert.typeOf(e, 'null');
-      assert.equal(min, 0);
+      assert.equal(min.value, 0);
       done();
     })
   });
@@ -87,7 +87,7 @@ describe('hours push -', function() {
                   to: new Date(2013,6,16)
                  }, function(e,max){
       assert.typeOf(e, 'null');
-      assert.equal(max, 9);
+      assert.equal(max.value, 9);
       done();
     })
   });
