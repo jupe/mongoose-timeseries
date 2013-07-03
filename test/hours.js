@@ -63,8 +63,8 @@ describe('hours push -', function() {
       assert.equal(docs.length, 1);
       //console.log('stats: '+JSON.stringify(docs[0].statistics));
       assert.equal(docs[0].statistics.i, 10);
-      assert.equal(docs[0].statistics.min, 0);
-      assert.equal(docs[0].statistics.max, 9);
+      assert.equal(docs[0].statistics.min.value, 0);
+      assert.equal(docs[0].statistics.max.value, 9);
       assert.equal(docs[0].statistics.avg, 4.5);
       done();
     });
