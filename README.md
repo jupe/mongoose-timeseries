@@ -3,6 +3,8 @@ mongoose-timeseries
 
 Mongoose model for general time series data.
 
+[![Build Status](https://travis-ci.org/jupe/mongoose-timeseries.png?branch=master)](https://travis-ci.org/jupe/mongoose-timeseries)
+
 Purpose:
 --------
 Main purpose for this project was to store time series data efficiently because of RRDtool -type database lose information over time 
