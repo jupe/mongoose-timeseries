@@ -3,6 +3,7 @@ mongoose-timeseries
 
 Mongoose model for general time series data.
 
+Tested with node.js version 0.6, 0.8, 0.10.
 [![Build Status](https://travis-ci.org/jupe/mongoose-timeseries.png?branch=master)](https://travis-ci.org/jupe/mongoose-timeseries)
 
 Purpose:
