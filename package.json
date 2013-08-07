@@ -1,10 +1,10 @@
 {
     "name": "mongoose-ts",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "preferGlobal": false,
     "description": "Mongoose model for time series data",
     "preferGlobal": "true",
-    "main": ".index.js",
+    "main": "index.js",
     "author": "Jussi Vatjus-Anttila <jussiva@gmail.com>",
     "contributors": [ 
       {
@@ -24,11 +24,10 @@
     "devDependencies": {
         "mocha": "*",
         "chai": "*"
-        
     },
     "license": "MIT",
     "engines": { "node": ">=0.8.0" },
     "scripts": {
-      "test": "mocha -R list test"
+      "test": "mocha"
     }
 }

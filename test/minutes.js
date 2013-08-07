@@ -10,26 +10,28 @@ mongoose.connection.on('error', function(e){
 
 describe('minutes -', function() {
   
+  before(function(){
+    mti = new MTI('minutes', {interval: 60});
+    mti.model.remove({}, function(){});
+  });
+  
   it('init', function(done) {
-    mti = new MTI('test', {interval: 60});
-    
     var schema = mti.getSchema();
     var model = mti.getModel();
     
     assert.typeOf( schema, 'object');
     assert.typeOf( model, 'function');
-    assert.equal( model.modelName, 'test');
+    assert.equal( model.modelName, 'minutes');
     assert.typeOf( schema.path('hourly.0.value'), 'object');
     assert.typeOf( schema.path('minutes.0.0.value'), 'object');
     assert.typeOf( schema.path('seconds.0.0.0.value'), 'undefined');
-    
-    mti.model.remove({}, function(){
-      mti.model.count({}, function(e,c){
-        assert.typeOf(e, 'null');
-        assert.equal(c, 0);
-        done();
-      });
+        
+    mti.model.count({}, function(e,c){
+      assert.typeOf(e, 'null');
+      assert.equal(c, 0);
+      done();
     });
+    
   });
   it('pushes', function(done) {
     this.timeout(60000);
@@ -57,13 +59,16 @@ describe('minutes -', function() {
           //assert.equal( Object.keys(doc.hourly).length, i+1, 'hourly length');
           
           //console.log('Loop '+i+' OK.');
+          
           loop(count, i+1, cb);
+          
         });
       } else {
+        setInterval( cb, 1000 );
         cb();
       }
     }
-    loop(360, 0, function(){ //every minute between 1...360
+    loop(360, 0, function(){ //every minute between 0...359
       done();
     });
   });
@@ -80,6 +85,8 @@ describe('minutes -', function() {
       assert.typeOf(docs, 'array');
       assert.equal(docs.length, 1);
       //console.log('stats: '+JSON.stringify(docs[0].statistics));
+      assert.typeOf(docs[0], 'object');
+      assert.typeOf(docs[0].statistics, 'object');
       assert.equal(docs[0].statistics.i, 360);
       assert.equal(docs[0].statistics.min.value, 0);
       assert.equal(docs[0].statistics.max.value, 359);

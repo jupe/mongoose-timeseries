@@ -10,16 +10,18 @@ mongoose.connection.on('error', function(e){
 
 describe('hours push -', function() {
   
-  it('init', function(done) {
+  before(function(){
     mti = new MTI('test', {interval: 3600, postProcessImmediately: true});
-    
-    mti.model.remove({}, function(){
-      mti.model.count({}, function(e,c){
-        assert.typeOf(e, 'null');
-        assert.equal(c, 0);
-        done();
-      });
+    mti.model.remove({}, function(){});
+  });
+  
+  it('init', function(done) {
+    mti.model.count({}, function(e,c){
+      assert.typeOf(e, 'null');
+      assert.equal(c, 0);
+      done();
     });
+    
   });
   
   it('pushes', function(done) {
