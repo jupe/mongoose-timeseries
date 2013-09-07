@@ -10,9 +10,11 @@ mongoose.connection.on('error', function(e){
 
 describe('hours push -', function() {
   
-  before(function(){
+  before(function(done){
     mti = new MTI('test', {interval: 3600, postProcessImmediately: true});
-    mti.model.remove({}, function(){});
+    mti.model.remove({}, function(){
+      done();
+    });
   });
   
   it('init', function(done) {
@@ -25,7 +27,7 @@ describe('hours push -', function() {
   });
   
   it('pushes', function(done) {
-    var loop = function(count, i, cb){
+    var loop = function( i, count,  cb){
       if(i<count) {
         
         mti.push( new Date(2013,6,16, i), 
@@ -46,13 +48,13 @@ describe('hours push -', function() {
           //assert.equal( Object.keys(doc.hourly).length, i+1);
           
           //console.log('Loop '+i+' OK.');
-          loop(count, i+1, cb);
+          loop(i+1, count, cb);
         });
       } else {
         cb();
       }
     }
-    loop(10, 0, function(){
+    loop(0, 10, function(){
       done();
     });
   });
@@ -93,4 +95,5 @@ describe('hours push -', function() {
       done();
     })
   });
+  
 });
