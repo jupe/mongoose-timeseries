@@ -9,10 +9,10 @@ mongoose.connection.on('error', function(e){
   console.log(e);
 });
 
-describe('minutes -', function() {
+describe('seconds -', function() {
   
   before(function(done){
-    mti = new MTI('minutes', {interval: 60, verbose: false});
+    mti = new MTI('seconds', {interval: 1, postProcessImmediately: true, verbose: false});
     //Clear all
     mti.model.remove({}, function(){
       done();
@@ -25,9 +25,10 @@ describe('minutes -', function() {
     
     assert.typeOf( schema, 'object');
     assert.typeOf( model, 'function');
-    assert.equal( model.modelName, 'minutes');
+    assert.equal( model.modelName, 'seconds');
     assert.typeOf( schema.path('hourly'), 'object');
     assert.typeOf( schema.path('minutes'), 'object');
+    assert.typeOf( schema.path('seconds'), 'object');
         
     mti.model.count({}, function(e,c){
       assert.typeOf(e, 'null');
@@ -41,10 +42,11 @@ describe('minutes -', function() {
     this.timeout(60000);
     var loop = function(i, count, cb){
       if(i<count) {
-        var hour = 12+Math.floor(i/60);
-        var min = i%60;
+        var hour = 6;
+        var min = Math.floor(i/60);
+        var sec = i%60;
         //console.log('Time: '+hour+':'+min);
-        mti.push( new Date(2013,6,16, hour, min), 
+        mti.push( new Date(2013,6,16, hour, min, sec), 
                     i, 
                     {test: i}, 
                     false,
@@ -59,8 +61,9 @@ describe('minutes -', function() {
           assert.equal(doc.day.getTime(), new Date(2013,6,16).getTime());
           assert.equal(doc.latest.value, i, 'Latest');
           assert.equal(doc.statistics.i, i+1);
-          assert.equal(doc.minutes[hour][min].value, i, 'current');
-          assert.equal(doc.minutes[hour][min].metadata.test, i, 'metadata');
+          assert.equal(doc.seconds[hour][min][sec].value, i, 'current');
+          assert.equal(doc.seconds[hour][min][sec].metadata.test, i, 'metadata');
+          assert.equal(doc.seconds[hour][min][sec].metadata.test, i, 'metadata');
           
           //assert.equal( Object.keys(doc.hourly).length, i+1, 'hourly length');
           
@@ -74,24 +77,18 @@ describe('minutes -', function() {
         cb();
       }
     }
-    loop(0, 360, function(){ //every minute between 0...359
+    loop(0, 1, function(){ //every minute between 0...359
       done();
     });
   });
- 
-  it('doc post process', function(done){
-    mti.model.recalc(new Date(2013,6,16), 0, function(){
-      done();
-    });
-  });
-   
+  /*
   it('doc summary', function(done) {
     //collection
     mti.model.find({}, function(e,docs){
       assert.typeOf(e, 'null');
       assert.typeOf(docs, 'array');
       assert.equal(docs.length, 1);
-      console.log('stats: '+JSON.stringify(docs[0].statistics));
+      //console.log('stats: '+JSON.stringify(docs[0].statistics));
       assert.typeOf(docs[0], 'object');
       assert.typeOf(docs[0].statistics, 'object');
       assert.equal(docs[0].statistics.i, 360);
@@ -123,5 +120,5 @@ describe('minutes -', function() {
       done();
     })
   });
-  
+  */
 });
