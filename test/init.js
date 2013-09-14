@@ -2,14 +2,13 @@ var assert = require('chai').assert;
 var mongoose = require('mongoose');
 var MTI = require('../');
 
-
+mongoose.connect('mongodb://localhost/mti');
+//mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+//mongoose.connection.on('open', console.log.bind(console, 'connection:'));
 
 describe('init -', function() {
   before( function(done){
-    mongoose.connect('mongodb://localhost/mti');
-    mongoose.connection.on('connected', function(){
-      done();
-    });
+    done();
   });
   it('hour', function(done) {
     //collection
@@ -63,7 +62,7 @@ describe('init -', function() {
     done();
   });
   
-  
+  /*
   it('milliseconds', function(done) {
     //collection
     var mti1 = new MTI('test', {interval: 0.1});
@@ -79,8 +78,6 @@ describe('init -', function() {
     assert.typeOf( schema.path('seconds'), 'object');
     assert.typeOf( schema.path('milliseconds'), 'object');
     assert.typeOf( schema.path('milliseconds'), 'object');
-    
     done();
-  });
-  
+  });*/
 });

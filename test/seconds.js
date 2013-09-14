@@ -2,21 +2,18 @@ var assert = require('chai').assert;
 var mongoose = require('mongoose');
 var MTI = require('../');
 var mti;
-mongoose.connect('mongodb://localhost/mti');
-
-mongoose.connection.on('error', function(e){
-  console.log('conn error');
-  console.log(e);
-});
 
 describe('seconds -', function() {
   
   before(function(done){
+   
     mti = new MTI('seconds', {interval: 1, postProcessImmediately: true, verbose: false});
     //Clear all
     mti.model.remove({}, function(){
       done();
     });
+    
+    
   });
   
   it('init', function(done) {

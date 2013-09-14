@@ -2,16 +2,14 @@ var assert = require('chai').assert;
 var mongoose = require('mongoose');
 var MTI = require('../');
 var mti;
-mongoose.connect('mongodb://localhost/mti');
 
-mongoose.connection.on('error', function(e){
-  console.log('conn error');
-  console.log(e);
-});
+//mongoose.connect('mongodb://localhost/mti');
+//mongoose.connection.on('error', console.error.bind(console, 'connection error:'))
 
 describe('minutes -', function() {
   
   before(function(done){
+
     mti = new MTI('minutes', {interval: 60, verbose: false});
     //Clear all
     mti.model.remove({}, function(){
@@ -91,7 +89,7 @@ describe('minutes -', function() {
       assert.typeOf(e, 'null');
       assert.typeOf(docs, 'array');
       assert.equal(docs.length, 1);
-      console.log('stats: '+JSON.stringify(docs[0].statistics));
+      //console.log('stats: '+JSON.stringify(docs[0].statistics));
       assert.typeOf(docs[0], 'object');
       assert.typeOf(docs[0].statistics, 'object');
       assert.equal(docs[0].statistics.i, 360);
@@ -123,5 +121,4 @@ describe('minutes -', function() {
       done();
     })
   });
-  
 });

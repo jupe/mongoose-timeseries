@@ -2,16 +2,15 @@ var assert = require('chai').assert;
 var mongoose = require('mongoose');
 var MTI = require('../');
 var mti;
-mongoose.connect('mongodb://localhost/mti');
 
-mongoose.connection.on('error', function(e){
-  //console.log(e);
-});
+//mongoose.connect('mongodb://localhost/mti');
+//mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
-describe('hours daily -', function() {
+describe('daily -', function() {
   
   before(function(done){
-    mti = new MTI('test', {interval: 86400/* 24h */, postProcessImmediately: true});
+    
+    mti = new MTI('daily', {interval: 86400/* 24h */, postProcessImmediately: true});
     mti.model.remove({}, function(){
       done();
     });
@@ -51,7 +50,7 @@ describe('hours daily -', function() {
         cb();
       }
     }
-    loop(0, 10, function(){
+    loop(1, 11, function(){
       done();
     });
   });
@@ -66,9 +65,9 @@ describe('hours daily -', function() {
       var i;
       for(i=0;i<10;i++){
         assert.equal(docs[i].statistics.i, 1);
-        assert.equal(docs[i].statistics.min.value, i);
-        assert.equal(docs[i].statistics.max.value, i);
-        assert.equal(docs[i].statistics.avg, i);
+        assert.equal(docs[i].statistics.min.value, i+1);
+        assert.equal(docs[i].statistics.max.value, i+1);
+        assert.equal(docs[i].statistics.avg, i+1);
       }
       done();
     });
@@ -80,7 +79,7 @@ describe('hours daily -', function() {
                   to: new Date(2013,6,16)
                  }, function(e,min){
       assert.typeOf(e, 'null');
-      assert.equal(min.value, 0);
+      assert.equal(min.value, 1);
       done();
     })
   });
@@ -91,9 +90,77 @@ describe('hours daily -', function() {
                   to: new Date(2013,6,16)
                  }, function(e,max){
       assert.typeOf(e, 'null');
-      assert.equal(max.value, 9);
+      assert.equal(max.value, 10);
       done();
     })
   });
+});
+describe('daily fetch', function() {
+  //var format = 'hash'
+  //var format = '[x,y]'
+  //var format = '[ms,y]'
   
+  it('getData - format[x,y]', function(done){
+    mti.findData({from: new Date(2013,5,30),
+                  to: new Date(2013,6,10),
+                  condition: {},
+                  format: '[x,y]'
+                 }, function(e,data){
+      //console.log(data);
+      assert.typeOf(e, 'null');
+      assert.typeOf(data, 'array');
+      assert.equal(data.length, 10);
+      var i=1;
+      data.forEach( function(row){
+        assert.typeOf(row, 'array');
+        assert.equal(row.length, 2);
+        assert.equal(row[1], i++);
+        assert.typeOf(row[0], 'Date');
+        assert.typeOf(row[1], 'number');
+      });
+      done();
+    });
+  });
+  
+  it('getData (half period)-format[x,y]', function(done){
+    mti.findData({from: new Date(2013,6,2),
+                  to: new Date(2013,6,4),
+                  condition: {},
+                  format: '[x,y]'
+                 }, function(e,data){
+      assert.typeOf(e, 'null');
+      assert.typeOf(data, 'array');
+      assert.equal(data.length, 3);
+      var i=2;
+      data.forEach( function(row){
+        assert.typeOf(row, 'array');
+        assert.equal(row.length, 2);
+        assert.equal(row[1], i++);
+        assert.typeOf(row[0], 'Date');
+        assert.typeOf(row[1], 'number');
+      });
+      done();
+    });
+  });
+  
+  it('getData-format[ms,y]', function(done){
+    mti.findData({from: new Date(2013,6,1),
+                  to: new Date(2013,6,6),
+                  condition: {},
+                  format: '[ms,y]'
+                 }, function(e,data){
+      //console.log(data);
+      assert.typeOf(e, 'null');
+      assert.typeOf(data, 'array');
+      assert.equal(data.length, 6);
+      var i=1;
+      data.forEach( function(row){
+        assert.typeOf(row, 'array');
+        assert.equal(row.length, 2);
+        assert.equal(row[1], i++);
+        assert.typeOf(row[0], 'number');
+      });
+      done();
+    });
+  });
 });

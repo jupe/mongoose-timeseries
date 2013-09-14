@@ -2,15 +2,15 @@ var assert = require('chai').assert;
 var mongoose = require('mongoose');
 var MTI = require('../');
 var mti;
-mongoose.connect('mongodb://localhost/mti');
 
-mongoose.connection.on('error', function(e){
-  //console.log(e);
-});
+//mongoose.connect('mongodb://localhost/mti');
+//mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
 describe('hours push -', function() {
   
   before(function(done){
+
+    
     mti = new MTI('test', {interval: 3600, postProcessImmediately: true});
     mti.model.remove({}, function(){
       done();
@@ -95,5 +95,4 @@ describe('hours push -', function() {
       done();
     })
   });
-  
 });
